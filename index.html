@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="UTF-8">
+		<title>steganography</title>
+		<link rel="stylesheet" href="css/style.css">
+        <meta property="og:title" content="steganography">
+        <meta property="og:image" content="https://bu3namigue.github.io/bu3npattern/demo.gif">
+        <link rel="image_src" href="/demo.gif">
+        <meta name="description" content="Hide and decode messages within your images">
+        <meta property="og:description" content="Hide and decode messages within your images">
+        <meta name="author" content="solsarratea">
+
+         <!--Twitter config-->
+        <meta name="twitter:title"  content="steganography">
+        <meta name="twitter:description" content="Hide and decode messages within your images">
+        <meta name="twitter:image"  content="https://bu3namigue.github.io/bu3npattern/demo.gif"
+        <meta name="twitter:card" content="summary_large_image">
+
+		<link rel="stylesheet" href="css/style.css">
+        <script src="js/libs/dat.gui.min.js"></script>
+         <script src="js/libs/fileSaver.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js" integrity="sha512-yNJzAsg5JyP91u+sLHlUDULMBd3hmEiVkYeeN1cQBKaLZ7EyT6oH2u5THNIRM2Fu6VKcZJv+F/QAp1h/qzy9Ow==" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	</head>
+
+    <script id="vertexShader" type="x-shader/x-fragment">
+	  varying vec2 texCoordVarying;
+              uniform bool decode;
+        uniform vec2 resolution;
+
+	  void main() {
+	      texCoordVarying = uv;
+	      gl_Position =   projectionMatrix *
+		  modelViewMatrix *
+		  vec4(position,1.0);
+	  }
+	</script>
+      <script id="fragmentShader" type="x-shader/x-fragment">
+        uniform bool decode;
+        uniform vec2 resolution;
+        varying vec2 texCoordVarying;
+        uniform sampler2D tex0;
+        uniform sampler2D tex1;
+        
+        uniform float time;
+
+        struct RGB{
+            uint r;
+            uint g;
+            uint b;
+        };
+
+        void encode_image(inout RGB dstPixel, RGB srcPixel)
+        {
+            dstPixel.r = (dstPixel.r & uint(0xF0)) | (srcPixel.r & uint(0xF0)) >> 4;
+            dstPixel.g = (dstPixel.g & uint(0xF0)) | (srcPixel.g & uint(0xF0)) >> 4;
+            dstPixel.b = (dstPixel.b & uint(0xF0)) | (srcPixel.b & uint(0xF0)) >> 4;
+        }
+
+
+        void decode_image(inout RGB dstPixel)
+        {
+            dstPixel.r = (dstPixel.r & uint(0x0F)) << 4;
+            dstPixel.g = (dstPixel.g & uint(0x0F)) << 4;
+            dstPixel.b = (dstPixel.b & uint(0x0F)) << 4;
+        }
+        ////////////////////////////////////////////////////////
+
+        void main()
+        {
+            vec2 uv = texCoordVarying * vec2(resolution.x/resolution.y, 1.0);
+
+            vec3 img1 ; vec3 img2;
+
+            img1 = texture2D(tex0, texCoordVarying).xyz;
+            img2 = texture2D(tex1, texCoordVarying).xyz;
+            vec3 color;
+
+            RGB dstPixel;RGB srcPixel;
+
+            dstPixel.r = uint(img1.r*255.);
+            dstPixel.g = uint(img1.g*255.);
+            dstPixel.b = uint(img1.b*255.);
+
+            srcPixel.r = uint(img2.r*255.);
+            srcPixel.g = uint(img2.g*255.);
+            srcPixel.b = uint(img2.b*255.);
+
+            //Encode texture
+            encode_image(dstPixel, srcPixel);
+            //Decode texture
+            if(decode){
+                decode_image(dstPixel);
+            }
+
+             gl_FragColor = vec4(float(dstPixel.r)/255.,float(dstPixel.g)/255., float(dstPixel.b)/255.,1.0);
+        }
+
+      </script>
+	<body>
+      <a id="screenshot" class="info">
+        <span class="fab fas fa-camera-retro fa-2x"></span>
+        <span class="text">Take screenshot</span>
+      </a>
+      <a id="btn" class="info">
+        <span class="fab fas fa-plus-circle "></span>
+        <span class="text">Add original image</span>
+      </a>
+      <a id="btn2" class="info" style="color: #585858;">
+        <span class="fab fas fa-plus-circle "></span>
+        <span class="text">Add hidden image</span>
+      </a>
+
+      <div id="addSourceImage" class="modal">
+        <div class="modal-header">
+          <p>Source Image</p>
+          <span class="close">&times;
+          </span>
+        </div>
+        <div class="modal-content">
+          <form enctype="multipart/form-data">
+            <input class="button" id="uploadSource" type="file"/>
+            <label for="uploadSource">Upload source image</label>
+          </form>
+        </div>
+      </div>
+
+      <div  id="addHiddenImage" class="modal">
+        <div class="modal-header">
+          <p>Hidden Image</p>
+          <span class="close">&times;
+          </span>
+        </div>
+        <div class="modal-content">
+          <form enctype="multipart/form-data">
+            <input class="button" id="uploadHidden" type="file"/>
+            <label for="uploadHidden">Upload image that will be hidden </label>
+          </form>
+        </div>
+      </div>
+
+      <a href="https://github.com/solsarratea/steganography" class="info"
+         title="View source on Github" target="_blank">
+        <span class="fab fa-github"></span>
+        <span class="text">View source</span>
+      </a>
+      <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="info" id="tweetB">
+        <i class="fab fa-twitter"></i>
+        <span class="text">Share</span>
+      </a>
+      <a href='https://ko-fi.com/Q5Q62LLVG' class="info" target="_blank">
+        <span class="fab fa-gratipay"></span>
+        <span class="text">Support </span>
+      </a>
+      <a href="https://forms.gle/bA6HMw27b2w5LyXW8" class="info" target="_blank">
+        <span class="fas fa-comment-dots "></span>
+        <span class="text">Send feedback!</span>
+      </a>
+      <canvas id="canvas"></canvas>
+      <script src="js/sceneSubjects/Shader.js"></script>
+	  <script src="js/SceneManager.js"></script>
+	  <script src="js/main.js"></script>
+	</body>
+</html>
