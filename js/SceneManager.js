@@ -9,7 +9,13 @@ function SceneManager(canvas) {
     const renderer = buildRender(screenDimensions);
     const camera = buildCamera(screenDimensions);
     const sceneSubjects = createSceneSubjects(scene);
-    const sceneControls = {decode: false, start:false, updateTex0: false, updateTex1: false};
+    const sceneControls = {
+        decode: false,
+        updateTex0: false,
+        updateTex1: false,
+        shift: 4,
+        pixels: 240,
+    };
     const guiControls = addGuiControls();
 
     function buildScene() {

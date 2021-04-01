@@ -22,8 +22,8 @@ function Shader(scene) {
             tex0: { type: "t", value: texture },
             tex1: { type: "t", value: hiddenTexture },
             time: { type: "f", value: 150.},
-            shift: {type: "i", value: 4 },
-            pixels: {type: "i", value: 240},
+            shift: { type: "i", value: 4 },
+            pixels: { type: "i", value: 240},
         },
         fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
         vertexShader: document.getElementById( 'vertexShader' ).textContent
@@ -49,12 +49,12 @@ function Shader(scene) {
             sceneControls.updateTex1 = false;
 
         }
-        if ( material.uniforms.pixels.value != sceneControls.pixels){
 
+        if ( material.uniforms.pixels.value != sceneControls.pixels){
             material.uniforms.pixels.value = pixelsMap[sceneControls.pixels];
         }
-        if ( material.uniforms.shift.value != sceneControls.shift){
 
+        if ( material.uniforms.shift.value != sceneControls.shift){
             material.uniforms.shift.value = sceneControls.shift;
         }
     }
