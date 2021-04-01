@@ -44,7 +44,8 @@ function SceneManager(canvas) {
 
 
     function addGuiControls(){
-     const datGui  = new dat.GUI({ autoPlace: true });
+
+       const datGui  = new dat.GUI({ autoPlace: true });
        var toggleDecode = { decode:function(){
            sceneControls.decode = true; }};
        var toggleEncode = { hide:function(){
@@ -53,6 +54,9 @@ function SceneManager(canvas) {
      let folder = datGui.addFolder(`the unseen`)
         folder.add(toggleEncode,'hide');
         folder.add(toggleDecode,'decode');
+        folder.add({pixels: 4},'pixels').min(0).max(8).step(1).onFinishChange(function(val ){ sceneControls.pixels= val })
+        folder.add({shift: 4},'shift').min(0).max(8).step(1).onFinishChange(function(val ){ sceneControls.shift= val })
+
 
     }
 

@@ -43,6 +43,8 @@
         varying vec2 texCoordVarying;
         uniform sampler2D tex0;
         uniform sampler2D tex1;
+        uniform int pixels;
+        uniform int shift;
         
         uniform float time;
 
@@ -54,17 +56,17 @@
 
         void encode_image(inout RGB dstPixel, RGB srcPixel)
         {
-            dstPixel.r = (dstPixel.r & uint(0xF0)) | (srcPixel.r & uint(0xF0)) >> 4;
-            dstPixel.g = (dstPixel.g & uint(0xF0)) | (srcPixel.g & uint(0xF0)) >> 4;
-            dstPixel.b = (dstPixel.b & uint(0xF0)) | (srcPixel.b & uint(0xF0)) >> 4;
+            dstPixel.r = (dstPixel.r & uint(pixels)) | (srcPixel.r & uint(255)) >> shift;
+            dstPixel.g = (dstPixel.g & uint(pixels)) | (srcPixel.g & uint(255)) >> shift;
+            dstPixel.b = (dstPixel.b & uint(pixels)) | (srcPixel.b & uint(255)) >> shift;
         }
 
 
         void decode_image(inout RGB dstPixel)
         {
-            dstPixel.r = (dstPixel.r & uint(0x0F)) << 4;
-            dstPixel.g = (dstPixel.g & uint(0x0F)) << 4;
-            dstPixel.b = (dstPixel.b & uint(0x0F)) << 4;
+            dstPixel.r = (dstPixel.r & uint(~pixels)) << shift;
+            dstPixel.g = (dstPixel.g & uint(~pixels)) << shift;
+            dstPixel.b = (dstPixel.b & uint(~pixels)) << shift;
         }
         ////////////////////////////////////////////////////////
 
@@ -100,9 +102,9 @@
 
       </script>
 	<body>
-      <a id="screenshot" class="info">
+      <a id="screenshot" class="info" >
         <span class="fab fas fa-camera-retro fa-2x"></span>
-        <span class="text">Take screenshot</span>
+        <span class="text">Save image</span>
       </a>
       <a id="btn" class="info">
         <span class="fab fas fa-plus-circle "></span>
@@ -146,7 +148,7 @@
         <span class="fab fa-github"></span>
         <span class="text">View source</span>
       </a>
-      <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="info" id="tweetB">
+      <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="info" id="tweetB" target="_blank">
         <i class="fab fa-twitter"></i>
         <span class="text">Share</span>
       </a>
