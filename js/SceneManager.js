@@ -57,10 +57,10 @@ function SceneManager(canvas) {
        var toggleEncode = { hide:function(){
            sceneControls.decode = false; }};
 
-     let folder = datGui.addFolder(`the unseen`)
+     let folder = datGui.addFolder(`steganography`)
         folder.add(toggleEncode,'hide');
         folder.add(toggleDecode,'decode');
-        folder.add({pixels: 4},'pixels').min(0).max(8).step(1).onFinishChange(function(val ){ sceneControls.pixels= val })
+        folder.add({bits: 4},'bits').min(0).max(8).step(1).onFinishChange(function(val ){ sceneControls.pixels= val })
         folder.add({shift: 4},'shift').min(0).max(8).step(1).onFinishChange(function(val ){ sceneControls.shift= val })
 
 
