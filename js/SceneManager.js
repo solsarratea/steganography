@@ -41,9 +41,17 @@ function SceneManager(canvas) {
     }
 
     function createSceneSubjects(scene,buffer) {
-        const sceneSubjects = [
-            new Shader(scene)
-        ];
+        let sceneSubjects;
+        let url = window.location.href.split("/").reverse()[0];
+        if (url =='decode'){
+            sceneSubjects = [
+                new Decoder(scene)
+            ]
+        }else {
+            sceneSubjects = [
+                new Shader(scene),
+            ];
+        }
 
         return sceneSubjects;
     }
@@ -56,13 +64,21 @@ function SceneManager(canvas) {
            sceneControls.decode = true; }};
        var toggleEncode = { hide:function(){
            sceneControls.decode = false; }};
-
-     let folder = datGui.addFolder(`steganography`)
-        folder.add(toggleEncode,'hide');
-        folder.add(toggleDecode,'decode');
-        folder.add({bits: 4},'bits').min(0).max(8).step(1).onFinishChange(function(val ){ sceneControls.pixels= val })
-        folder.add({shift: 4},'shift').min(0).max(8).step(1).onFinishChange(function(val ){ sceneControls.shift= val })
-
+        let url = window.location.href.split("/").reverse()[0];
+        let folder;
+        if (url != 'decode') {
+         folder = datGui.addFolder(`create secret image`)
+         folder.add(toggleEncode,'hide');
+         folder.add(toggleDecode,'decode');
+         folder.add({bits: 4},'bits').min(0).max(8).step(1).onFinishChange(function(val ){ sceneControls.pixels= val })
+            folder.add({shift: 4},'shift').min(0).max(8).step(1).onFinishChange(function(val ){ sceneControls.shift= val })
+        } else {
+         folder = datGui.addFolder(`decode message`)
+         folder.add(toggleEncode,'hide');
+         folder.add(toggleDecode,'decode');
+         folder.add({bits: 4},'bits').min(0).max(8).step(1).onFinishChange(function(val ){ sceneControls.pixels= val })
+        }
+        folder.open();
 
     }
 
@@ -71,7 +87,6 @@ function SceneManager(canvas) {
     }
 
     this.updateHidden = function() {
-        console.log("yea")
         sceneControls.updateTex1 = true;
     }
 

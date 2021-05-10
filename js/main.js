@@ -25,33 +25,45 @@ function render() {
 }
 
 var modal  = document.getElementById("addSourceImage");
-var modal2 = document.getElementById("addHiddenImage");
-
 var btn = document.getElementById("btn");
 var btn2 = document.getElementById("btn2");
 
 var span = document.getElementsByClassName("close")[0];
-var span2 = document.getElementsByClassName("close")[1];
-
 modal.style.display="none";
-modal2.style.display="none";
 
+var modal2 = document.getElementById("addHiddenImage");
+
+if (modal2!= null) {
+    var span2 = document.getElementsByClassName("close")[1];
+    modal2.style.display="none";
+    span2.onclick = function() {
+        modal2.style.display="none";
+
+    btn2.onclick = function() {
+        modal2.style.display = "block"
+    }
+
+        var upload2  = document.getElementById("uploadHidden");
+
+        upload2.onchange = function(e) {
+            hiddenSource = true;
+            saveImage(e,1);
+            modal2.style.display = "none";
+        };
+    }
+}else {
+
+    btn2.onclick = function() {
+     window.location.href= "/"
+    }
+}
 
 btn.onclick = function() {
     modal.style.display = "block"
 }
 
-btn2.onclick = function() {
-    modal2.style.display = "block"
-}
-
-
 span.onclick = function() {
     modal.style.display = "none";
-}
-
-span2.onclick = function() {
-    modal2.style.display="none";
 }
 
 
@@ -144,7 +156,7 @@ function saveImage(e,idx) {
 
 }
 var upload = document.getElementById("uploadSource");
-var upload2  = document.getElementById("uploadHidden");
+
 
 upload.onchange = function(e) {
     updateSource = true;
@@ -152,8 +164,19 @@ upload.onchange = function(e) {
     modal.style.display = "none";
 };
 
-upload2.onchange = function(e) {
-    hiddenSource = true;
-    saveImage(e,1);
-    modal2.style.display = "none";
-};
+var info = document.getElementById("info");
+
+if (info!=null){
+    var modalinfo = document.getElementById("showInfo");
+    modalinfo.style.display = "none";
+    var closeinfo = document.getElementsByClassName("close")[2];
+    modalinfo.style.display="none";
+    info.onclick = function() {
+        modalinfo.style.display="block";
+    }
+
+    closeinfo.onclick = function() {
+        modalinfo.style.display = "none"
+    }
+
+    }

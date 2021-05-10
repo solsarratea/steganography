@@ -1,3 +1,78 @@
+let vertexShader =`varying vec2 texCoordVarying;
+   uniform bool decode;
+   uniform vec2 resolution;
+
+   void main() {
+   texCoordVarying = uv;
+   gl_Position =   projectionMatrix *
+   modelViewMatrix *
+     vec4(position,1.0);
+ }
+`
+
+let fragmentShader =`uniform bool decode;
+uniform vec2 resolution;
+varying vec2 texCoordVarying;
+uniform sampler2D tex0;
+uniform sampler2D tex1;
+uniform int pixels;
+uniform int shift;
+
+uniform float time;
+
+struct RGB{
+    uint r;
+    uint g;
+    uint b;
+};
+
+void encode_image(inout RGB dstPixel, RGB srcPixel)
+{
+    dstPixel.r = (dstPixel.r & uint(pixels)) | (srcPixel.r & uint(255)) >> shift;
+    dstPixel.g = (dstPixel.g & uint(pixels)) | (srcPixel.g & uint(255)) >> shift;
+    dstPixel.b = (dstPixel.b & uint(pixels)) | (srcPixel.b & uint(255)) >> shift;
+}
+
+
+void decode_image(inout RGB dstPixel)
+{
+    dstPixel.r = (dstPixel.r & uint(~pixels)) << shift;
+    dstPixel.g = (dstPixel.g & uint(~pixels)) << shift;
+    dstPixel.b = (dstPixel.b & uint(~pixels)) << shift;
+}
+////////////////////////////////////////////////////////
+
+void main()
+{
+    vec2 uv = texCoordVarying * vec2(resolution.x/resolution.y, 1.0);
+
+    vec3 img1 ; vec3 img2;
+
+    img1 = texture2D(tex0, texCoordVarying).xyz;
+    img2 = texture2D(tex1, texCoordVarying).xyz;
+    vec3 color;
+
+    RGB dstPixel;RGB srcPixel;
+
+    dstPixel.r = uint(img1.r*255.);
+    dstPixel.g = uint(img1.g*255.);
+    dstPixel.b = uint(img1.b*255.);
+
+    srcPixel.r = uint(img2.r*255.);
+    srcPixel.g = uint(img2.g*255.);
+    srcPixel.b = uint(img2.b*255.);
+
+    //Encode texture
+    encode_image(dstPixel, srcPixel);
+    //Decode texture
+    if(decode){
+        decode_image(dstPixel);
+    }
+
+     gl_FragColor = vec4(float(dstPixel.r)/255.,float(dstPixel.g)/255., float(dstPixel.b)/255.,1.0);
+}
+`
+
 function Shader(scene) {
     var geometry = new THREE.PlaneBufferGeometry( 2,2);
     var texture  = new THREE.TextureLoader().load("textures/q2.jpg");
@@ -25,8 +100,8 @@ function Shader(scene) {
             shift: { type: "i", value: 4 },
             pixels: { type: "i", value: 240},
         },
-        fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
-        vertexShader: document.getElementById( 'vertexShader' ).textContent
+        fragmentShader: fragmentShader,
+        vertexShader: vertexShader
     });
 
     var shaderObject = new THREE.Mesh( geometry, material );
