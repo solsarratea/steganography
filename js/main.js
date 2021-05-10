@@ -23,48 +23,79 @@ function render() {
     requestAnimationFrame(render);
     sceneManager.update();
 }
-
-var modal  = document.getElementById("addSourceImage");
 var btn = document.getElementById("btn");
-var span = document.getElementsByClassName("close")[0];
-modal.style.display="none";
+if (btn != null){
+    btn.onclick = function() {
+        modal.style.display = "block"
+    }
+    var modal  = document.getElementById("addSourceImage");
+    var span = document.getElementsByClassName("close")[0];
+    modal.style.display="none";
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    var upload = document.getElementById("uploadSource");
 
 
+    upload.onchange = function(e) {
+        updateSource = true;
+        saveImage(e,0);
+        modal.style.display = "none";
+    };
+
+}
 
 var btn2 = document.getElementById("btn2");
 if (btn2 != null){
+    btn2.onclick = function() {
+        console.log("yeas")
+        modal2.style.display = "block"
+    }
     var modal2 = document.getElementById("addHiddenImage");
     var span2 = document.getElementsByClassName("close")[1];
     modal2.style.display="none";
     span2.onclick = function() {
         modal2.style.display="none";
     }
-
-    btn2.onclick = function() {
-        console.log("yeas")
-        modal2.style.display = "block"
-    }
-
     var upload2  = document.getElementById("uploadHidden");
     upload2.onchange = function(e) {
         hiddenSource = true;
         saveImage(e,1);
         modal2.style.display = "none";
  };
-}else {
+}
 
-    btn2.onclick = function() {
+var btngoback = document.getElementById("btn-goback");
+if (btngoback !=null){
+    btngoback.onclick = function() {
      window.location.href= "/"
     }
 }
 
-btn.onclick = function() {
-    modal.style.display = "block"
+var btndecode = document.getElementById("btn-decode");
+console.log(btndecode)
+if(btndecode!=null){
+    btndecode.onclick = function() {
+        modal.style.display = "block"
+    }
+
+    var modal  = document.getElementById("addSourceImage");
+    modal.style.display="none";
+
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    var upload = document.getElementById("uploadSource");
+    upload.onchange = function(e) {
+        updateSource = true;
+        saveImage(e,0);
+        modal.style.display = "none";
+    };
+
+
 }
 
-span.onclick = function() {
-    modal.style.display = "none";
-}
 
 
 window.onclick = function(event) {
@@ -155,14 +186,6 @@ function saveImage(e,idx) {
 
 
 }
-var upload = document.getElementById("uploadSource");
-
-
-upload.onchange = function(e) {
-    updateSource = true;
-    saveImage(e,0);
-    modal.style.display = "none";
-};
 
 var info = document.getElementById("info");
 
