@@ -26,31 +26,31 @@ function render() {
 
 var modal  = document.getElementById("addSourceImage");
 var btn = document.getElementById("btn");
-var btn2 = document.getElementById("btn2");
-
 var span = document.getElementsByClassName("close")[0];
 modal.style.display="none";
 
-var modal2 = document.getElementById("addHiddenImage");
 
-if (modal2!= null) {
+
+var btn2 = document.getElementById("btn2");
+if (btn2 != null){
+    var modal2 = document.getElementById("addHiddenImage");
     var span2 = document.getElementsByClassName("close")[1];
     modal2.style.display="none";
     span2.onclick = function() {
         modal2.style.display="none";
+    }
 
     btn2.onclick = function() {
+        console.log("yeas")
         modal2.style.display = "block"
     }
 
-        var upload2  = document.getElementById("uploadHidden");
-
-        upload2.onchange = function(e) {
-            hiddenSource = true;
-            saveImage(e,1);
-            modal2.style.display = "none";
-        };
-    }
+    var upload2  = document.getElementById("uploadHidden");
+    upload2.onchange = function(e) {
+        hiddenSource = true;
+        saveImage(e,1);
+        modal2.style.display = "none";
+ };
 }else {
 
     btn2.onclick = function() {
