@@ -28,70 +28,71 @@
 	<body>
         <a id="info" class="info" >
         <span class="fab fas fa-info-circle"></span>
-        <span class="text">About</span>
+        <span class="text">Más info</span>
       </a>
       <a id="screenshot" class="info" >
         <span class="fab fas fa-camera-retro fa-2x"></span>
-        <span class="text">Save image</span>
+        <span class="text">Captura de pantalla</span>
       </a>
       <a id="btn" class="info">
         <span class="fab fas fa-plus-circle "></span>
-        <span class="text">Add visible image</span>
+        <span class="text">Agregar imagen visible</span>
       </a>
       <a id="btn2" class="info" style="color: #585858;">
         <span class="fab fas fa-plus-circle "></span>
-        <span class="text">Add image to be hidden</span>
+        <span class="text">Agregar imagen para esconder</span>
       </a>
       <div id="addSourceImage" class="modal">
         <div class="modal-header">
-          <p>Visible Image</p>
+          <p>Imagen Visible</p>
           <span class="close">&times;
           </span>
         </div>
         <div class="modal-content">
           <form enctype="multipart/form-data">
             <input class="button" id="uploadSource" type="file"/>
-            <label for="uploadSource">Upload image that will be visible</label>
+            <label for="uploadSource">Subir la imagen que va a ser visible</label>
           </form>
         </div>
       </div>
 
       <div  id="addHiddenImage" class="modal">
         <div class="modal-header">
-          <p>Hidden Image</p>
+          <p>Imagen escondida</p>
           <span class="close">&times;
           </span>
         </div>
         <div class="modal-content">
           <form enctype="multipart/form-data">
             <input class="button" id="uploadHidden" type="file"/>
-            <label for="uploadHidden">Upload image that will be hidden </label>
+            <label for="uploadHidden">Subir la imagen que va a ser escondida </label>
           </form>
         </div>
       </div>
        <div id="showInfo" class="modal">
         <div class="modal-header">
-          <p>Steganography Playground</p>
+          <p>Playground de Esteganografía</p>
           <span class="close">&times;
           </span>
         </div>
         <div class="modal-content">
           <form enctype="multipart/form-data">
-           <p> This tool was created for the <a href="https://hyperlink.academy/courses/digital-alchemy/89">Digital Alchemy Course</a>.
-             It uses the <a href="https://wiki.bi0s.in/forensics/lsb/">LSB Encoding </a> Algorithm for hidding one image into another.</p>
-<p>This implementation runs on the GPU enabling real-time editing. See how much bits do you choose for hiding information, and what happens if you decide to shift them.</p>
-             <p><a href="/decode">G0  HERE </a> for decoding an image with hidden message. </p>
+           <p> Esta herramienta fue creada para el curso <a href="https://hyperlink.academy/courses/digital-alchemy/89">Digital Alchemy</a>.
+             Con el fin de entender el algoritmo de <a href="https://wiki.bi0s.in/forensics/lsb/">LSB Encoding </a> para "esconder" una imagen en otra. </p>
+            <p>Esta implementación corre en la GPU, perimitiendo la edición a tiempo real.  Explora cuantos bits eligís para esconder información, 
+              y qué pasa si decides <i>correr</i>(shift) los bits.</p>
+             <p><a href="/decode">IR AQUÍ </a> para decodificar la imagen. </p>
           </form>
         </div>
       </div>
       <a href="https://github.com/solsarratea/steganography" class="info"
          title="View source on Github" target="_blank">
         <span class="fab fa-github"></span>
-        <span class="text">View source</span>
+        <span class="text">Ver el código fuente</span>
       </a>
       <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="info" id="tweetB" target="_blank">
         <i class="fab fa-twitter"></i>
-        <span class="text">Share</span>
+        <span class="text">Compartir</span>
       </a>
       <a href='https://ko-fi.com/Q5Q62LLVG' class="info" target="_blank">
         <span class="fab fa-gratipay"></span>
